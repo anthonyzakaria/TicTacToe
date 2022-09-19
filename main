@@ -1,0 +1,114 @@
+import random
+
+
+class TicTacToe:
+
+    def __init__(self):
+        self.board = []
+
+    def createboard(self):
+        for i in range(3):
+            row = []
+            for j in range(3):
+                row.append('-')
+            self.board.append(row)
+
+    def getrandfirstplayer(self):
+        return random.randint(0, 1)
+
+    def fixed(self, row, col, player):
+        self.board[row][col] = player
+
+    def playerwin(self, player):
+        win = None
+
+        n = len(self.board)
+
+        for i in range(n):
+            win = True
+            for j in range(n):
+                if self.board[i][j] != player:
+                    win = False
+                    break
+            if win:
+                return win
+
+        for i in range(n):
+            win = True
+            for j in range(n):
+                if self.board[j][i] != player:
+                    win = False
+                    break
+            if win:
+                return win
+
+        win = True
+        for i in range(n):
+            if self.board[i][i] != player:
+                win = False
+                break
+        if win:
+            return win
+
+        win = True
+        for i in range(n):
+            if self.board[i][n - 1 - i] != player:
+                win = False
+                break
+        if win:
+            return win
+        return False
+
+        for row in self.board:
+            for item in row:
+                if item == '-':
+                    return False
+        return True
+
+    def isboardfilled(self):
+        for row in self.board:
+            for item in row:
+                if item == '-':
+                    return False
+        return True
+
+    def swapplayerturn(self, player):
+        return 'X' if player == '0' else '0'
+
+    def showboard(self):
+        for row in self.board:
+            for item in row:
+                print(item,end = ' ')
+            print()
+
+    def start(self):
+        self.createboard()
+
+        player = 'X' if self.getrandfirstplayer() == 1 else '0'
+        while True:
+            print(f"Player {player} turn")
+
+            self.showboard()
+
+            row, col = list(
+                map(int, input("Enter row and column numbers: ").split()))
+            print()
+
+            self.fixed(row - 1, col - 1, player)
+
+            if self.playerwin(player):
+                print(f"Player {player} wins the game!")
+                break
+
+            if self.isboardfilled():
+                print("Draw!")
+                break
+
+            player = self.swapplayerturn(player)
+
+        print()
+        self.showboard()
+
+
+TTT = TicTacToe()
+TTT.start()
